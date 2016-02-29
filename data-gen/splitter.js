@@ -47,7 +47,16 @@ function processVariable(variable){
 
 function monthStr(month){
   if (month<10) return '0' + month;
-  else return month;
+  else return '' + month;
+}
+function saveFile(filename,data){
+
+  fs.writeFile(filename, data,'utf-8',function (err){
+    if(err){
+      return  console.error('Error writing file' + filename, err);
+    }
+    console.log('Created ' + filename);
+  });
 }
 
 function createJSON(v,d){
@@ -65,12 +74,8 @@ function createJSON(v,d){
       var basefilename = d.agno + monthStr(d.mes),  
         filename_json = out + '/' + v.name + '/' + basefilename + '.json';
 
-      fs.writeFile(filename_json, JSON.stringify(result.rows) ,'utf-8',function (err){
-        if(err){
-          return  console.error('Error writing file' + filename, err);
-        }
-        console.log('Created ' + filename_json);
-      });
+      saveFile(filename_json, JSON.stringify(result.rows));
+      
     });
   });
 }
