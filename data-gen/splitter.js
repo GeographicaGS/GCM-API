@@ -24,7 +24,7 @@ function processVariable(variable){
       return console.error('error fetching client from pool', err);
     }
 
-    client.query('SELECT agno,mes from ' +variable.table + ' group by agno,mes ORDER BY agno LIMIT 1',function(err, result) {
+    client.query('SELECT agno,mes from ' +variable.table + ' group by agno,mes ORDER BY agno',function(err, result) {
       //call `done()` to release the client back to the pool
       done();
 
@@ -56,7 +56,7 @@ function createJSON(v,d){
       return console.error('error fetching client from pool', err);
     }
     client.query('SELECT ' + v.data_fields[0] + ' as p ,' + v.data_fields[1] + ' as v from ' 
-            + v.table + ' WHERE agno=$1 AND mes=$2 LIMIT 1', [d.agno,d.mes],function(err, result) {
+            + v.table + ' WHERE agno=$1 AND mes=$2', [d.agno,d.mes],function(err, result) {
       done();
       if(err) {
         return console.error('Error running query [' + d.agno + ',' + d.mes + ']', err);
@@ -65,14 +65,12 @@ function createJSON(v,d){
       var basefilename = d.agno + monthStr(d.mes),  
         filename_json = out + '/' + v.name + '/' + basefilename + '.json';
 
-      fs.writeFile(filename_json, data ,'utf-8',function (err){
+      fs.writeFile(filename_json, JSON.stringify(result.rows) ,'utf-8',function (err){
         if(err){
           return  console.error('Error writing file' + filename, err);
         }
-
         console.log('Created ' + filename_json);
       });
-      
     });
   });
 }
