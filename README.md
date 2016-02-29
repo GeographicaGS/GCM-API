@@ -36,3 +36,19 @@ location /mapbox/splitdata {
   gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 }
 ```
+
+## URLs
+
+### Variables
+
+You can download variables from:
+
+http://globalclimatemonitor.org/mapbox/splitdata/<variable>/<YYYYMM>.json
+
+Examples:
+- Temp (year 2015, month 7): http://globalclimatemonitor.org/mapbox/splitdata/temp/201507.json
+- Rainfall (year 2015, month 7): http://globalclimatemonitor.org/mapbox/splitdata/pre/201507.json
+
+
+### GeoJSON grid
+http://globalclimatemonitor.org/mapbox/grid.geojson
