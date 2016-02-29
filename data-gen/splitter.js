@@ -49,32 +49,35 @@ function monthStr(month){
   if (month<10) return '0' + month;
   else return '' + month;
 }
-function saveFile(filename,data){
-
-  fs.writeFile(filename, data,'utf-8',function (err){
-    if(err){
-      return  console.error('Error writing file' + filename, err);
-    }
-    console.log('Created ' + filename);
-  });
-}
 
 function createJSON(v,d){
   pg.connect(conString, function(err, client, done) {
     if(err) {
       return console.error('error fetching client from pool', err);
     }
-    client.query('SELECT ' + v.data_fields[0] + ' as p ,' + v.data_fields[1] + ' as v from ' 
-            + v.table + ' WHERE agno=$1 AND mes=$2', [d.agno,d.mes],function(err, result) {
+    client.query('SELECT ' +  v.data_fields[1] + ' as v from ' 
+            + v.table + ' WHERE agno=$1 AND mes=$2 ORDER BY ' + v.data_fields[0], [d.agno,d.mes],function(err, result) {
       done();
       if(err) {
         return console.error('Error running query [' + d.agno + ',' + d.mes + ']', err);
       }
       
       var basefilename = d.agno + monthStr(d.mes),  
-        filename_json = out + '/' + v.name + '/' + basefilename + '.json';
+        filename = out + '/' + v.name + '/' + basefilename + '.json';
 
-      saveFile(filename_json, JSON.stringify(result.rows));
+      var data = [];
+
+      for (var i=0;i<result.rows.length;i++){
+        data[i] = parseFloat(result.rows[i].v);
+      }
+
+      fs.writeFile(filename, JSON.stringify(data),'utf-8',function (err){
+        if(err){
+          return  console.error('Error writing file' + filename, err);
+        }
+        console.log('Created ' + filename);
+      });
+      
       
     });
   });
