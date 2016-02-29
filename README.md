@@ -42,8 +42,9 @@ location /mapbox/splitdata {
 ### Variables
 
 You can download variables from:
-
+```
 http://globalclimatemonitor.org/mapbox/splitdata/<variable>/<YYYYMM>.json
+```
 
 Examples:
 - Temp (year 2015, month 7): http://globalclimatemonitor.org/mapbox/splitdata/temp/201507.json
