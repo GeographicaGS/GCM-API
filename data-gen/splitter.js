@@ -55,7 +55,7 @@ function createJSON(v,d){
     if(err) {
       return console.error('error fetching client from pool', err);
     }
-    client.query('SELECT ' +  v.data_fields[1] + ' as v from ' 
+    client.query('SELECT ' +  v.data_fields[1] + ' as v,' + v.data_fields[0] + ' as i from ' 
             + v.table + ' WHERE agno=$1 AND mes=$2 ORDER BY ' + v.data_fields[0], [d.agno,d.mes],function(err, result) {
       done();
       if(err) {
@@ -68,7 +68,7 @@ function createJSON(v,d){
       var data = [];
 
       for (var i=0;i<result.rows.length;i++){
-        data[i] = parseFloat(result.rows[i].v);
+        data[result.rows[i].i] = parseFloat(result.rows[i].v);
       }
 
       fs.writeFile(filename, JSON.stringify(data),'utf-8',function (err){

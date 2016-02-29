@@ -19,7 +19,7 @@ node splitter.js
 ## Create grid.json
 
 ```
-ogr2ogr -f "GeoJSON" grid.geojson  PG:"host=astrid.geographica.gs user=postgres dbname=global_drought password=escalaHorizontal23" -sql "SELECT id_punto,geom from id_coordenadas"
+ogr2ogr -f "GeoJSON" grid.geojson  PG:"host=astrid.geographica.gs user=postgres dbname=global_drought password=escalaHorizontal23" -sql "SELECT id_punto as i,geom from id_coordenadas"
 ```
 
 ## Server web folder using nginx compression
@@ -44,7 +44,7 @@ location /mapbox/splitdata {
 You can download variables from:
 ```
 http://globalclimatemonitor.org/mapbox/splitdata/<variable>/<YYYYMM>.json
-```
+``
 
 Examples:
 - Temp (year 2015, month 7): http://globalclimatemonitor.org/mapbox/splitdata/temp/201507.json
